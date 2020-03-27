@@ -1,0 +1,71 @@
+{{! Copyright(c) 1995 - 2018 T-Systems Multimedia Solutions GmbH }}
+{{! Riesaer Str. 5, 01129 Dresden }}
+{{! All rights reserved. }}
+{{#operation}}
+/**
+ * Namespace for {{nickname}}.
+ */
+export namespace {{operationIdCamelCase}} {
+    /**
+     * Parameter map for {{nickname}}.
+     */
+    export interface PartialParamMap {
+    {{#allParams}}
+      {{#description}}
+      /**
+       * {{{description}}}
+       */
+      {{/description}}
+      {{paramName}}{{^required}}?{{/required}}: {{{dataType}}};
+    {{/allParams}}
+    }
+
+    /**
+     * Enumeration of all parameters for {{nickname}}.
+     */
+    export enum Parameters {
+    {{#allParams}}
+      {{#description}}
+      /**
+       * {{{description}}}
+       */
+      {{/description}}
+      {{paramName}} = '{{paramName}}'{{^-last}},{{/-last}}
+    {{/allParams}}
+    }
+
+    /**
+     * A map of tuples with error name and `ValidatorFn` for each parameter of {{nickname}}
+     * that does not have an own model.
+     */
+    export const ParamValidators: {[K in keyof {{operationIdCamelCase}}.PartialParamMap]?: [string, ValidatorFn][]} = {
+    {{#allParams}}
+    {{^isModel}}
+      {{paramName}}: [
+              {{#required}}
+              ['required', Validators.required],
+              {{/required}}
+              {{#hasValidation}}
+              {{#minimum}}
+              ['min', Validators.min({{minimum}})],
+              {{/minimum}}
+              {{#maximum}}
+              ['max', Validators.max({{maximum}})],
+              {{/maximum}}
+              {{#minLength}}
+              ['minlength', Validators.minLength({{minLength}})],
+              {{/minLength}}
+              {{#maxLength}}
+              ['maxlength', Validators.maxLength({{maxLength}})],
+              {{/maxLength}}
+              {{#pattern}}
+              ['pattern', Validators.pattern({{pattern}})],
+              {{/pattern}}
+              {{/hasValidation}}
+      ],
+    {{/isModel}}
+    {{/allParams}}
+    };
+}
+
+{{/operation}}

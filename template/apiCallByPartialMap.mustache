@@ -1,0 +1,41 @@
+{{! Copyright(c) 1995 - 2018 T-Systems Multimedia Solutions GmbH }}
+{{! Riesaer Str. 5, 01129 Dresden }}
+{{! All rights reserved. }}
+{{#useHttpClient}}
+
+  /**
+   * {{summary}} by map.
+   * {{notes}}
+   * @param map parameters map to set partial amount of parameters easily
+   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+   * @param reportProgress flag to report request and response progress.
+   * @param cancelPreviousRequest set whether or not the previous request for the same operation should be cancelled if it is still running.
+   */
+  public {{nickname}}ByMap(
+    map: {{operationIdCamelCase}}.PartialParamMap,
+    observe?: 'body',
+    reportProgress?: boolean,
+    cancelPreviousRequest?: boolean): Observable<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>;
+  public {{nickname}}ByMap(
+    map: {{operationIdCamelCase}}.PartialParamMap,
+    observe?: 'response',
+    reportProgress?: boolean,
+    cancelPreviousRequest?: boolean): Observable<HttpResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
+  public {{nickname}}ByMap(
+    map: {{operationIdCamelCase}}.PartialParamMap,
+    observe?: 'events',
+    reportProgress?: boolean,
+    cancelPreviousRequest?: boolean): Observable<HttpEvent<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
+  public {{nickname}}ByMap(
+    map: {{operationIdCamelCase}}.PartialParamMap,
+    observe: any = 'body',
+    reportProgress: boolean = false,
+    cancelPreviousRequest: boolean = false): Observable<any> {
+    return this.{{nickname}}({{#allParams}}
+      map.{{paramName}},{{/allParams}}
+      observe,
+      reportProgress,
+      cancelPreviousRequest
+    );
+  }
+{{/useHttpClient}}

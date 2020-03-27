@@ -1,0 +1,93 @@
+openapi: 3.0.2
+info:
+  title: News API
+  description: お知らせ
+  version: 0.0.6
+servers:
+  - url: 'http://localhost:10010/api/news'
+paths:
+  /:
+    get:
+      description: お知らせのリストを取得する
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: number
+        - name: offset
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: お知らせの一覧
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsListResponse'
+      summary: お知らせのリスト
+      tags:
+        - news
+      operationId: getNewsList
+  '/{id}':
+    get:
+      description: お知らせの詳細を取得する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: お知らせの詳細
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NewsResponse'
+        '404':
+          description: News not found
+      summary: お知らせの詳細
+      tags:
+        - news
+      operationId: getNews
+components:
+  schemas:
+    NewsListResponse:
+      type: array
+      items:
+        type: string
+    News:
+      type: object
+      x-tags:
+        - news
+      description: ''
+      title: お知らせ
+      properties:
+        id:
+          type: string
+        content:
+          type: string
+          description: html可
+        excerpt:
+          type: string
+          description: お知らせを短くしたもの（HTML不可）
+        date:
+          type: string
+          format: date
+        thumbnail:
+          type: string
+        subject:
+          type: string
+          description: 題名
+      required:
+        - id
+        - content
+        - date
+        - subject
+    NewsResponse:
+      type: object
+      properties:
+        news:
+          $ref: '#/components/schemas/News'

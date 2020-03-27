@@ -1,0 +1,15 @@
+{{! Copyright(c) 1995 - 2018 T-Systems Multimedia Solutions GmbH }}
+{{! Riesaer Str. 5, 01129 Dresden }}
+{{! All rights reserved. }}
+export interface {{classname}} {{#parent}}extends {{{parent}}} {{/parent}}{ {{>modelGenericAdditionalProperties}}
+{{#vars}}
+    {{#description}}
+    /**
+     * {{{description}}}
+     */
+    {{/description}}
+    {{#isReadOnly}}readonly {{/isReadOnly}}{{{name}}}{{^required}}?{{/required}}: {{#isEnum}}{{{datatypeWithEnum}}}{{/isEnum}}{{^isEnum}}{{{dataType}}}{{/isEnum}};
+{{/vars}}
+}
+
+{{>modelGenericEnums}}

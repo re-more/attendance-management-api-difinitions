@@ -1,0 +1,99 @@
+openapi: 3.0.2
+info:
+  version: 0.1.0-SNAPSHOT
+  title: order
+servers:
+  - url: "{baseUrl}"
+    description: Do not discribe actual server URL. This parameter should be given by each envioronment config of application.
+    variables:
+      baseUrl:
+        default: 'http://localhost:10010/api'
+paths:
+  /order:
+    post:
+      description: カートの商品を注文する
+      parameters:
+        - name: Authorization
+          in: header
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+            examples:
+              example-1:
+                value:
+                  items:
+                    - gcd: '123450000'
+                      quantity: '3'
+                    - gcd: '223450000'
+                      quantity: '1'
+        description: ''
+      responses:
+        '200':
+          description: カートの内容を返す
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+              examples:
+                example-1:
+                  value:
+                    order_id: '1234567'
+                    items:
+                      - gcd: '123450000'
+                        quantity: '3'
+                      - gcd: '223450000'
+                        quantity: '1'
+      operationId: postOrder
+      summary: PostOrder
+      tags:
+        - order
+
+components:
+  securitySchemes:
+    openid_auth:
+      description: OpenID Connect
+      type: openIdConnect
+      openIdConnectUrl: 'https://cognito-idp.ap-southeast-2.amazonaws.com/ap-northeast-1_dw4s9iuRs'
+  schemas:
+    OrderRequest:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+      x-tags:
+        - order
+      title: OrderRequest
+      description: カートの情報
+    OrderResponse:
+      type: object
+      properties:
+        orderId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+      x-tags:
+        - order
+      title: OrderResponse
+      description: 正常に注文が処理されたとき
+    OrderItem:
+      type: object
+      properties:
+        gcd:
+          type: string
+        quantity:
+          type: number
+          format: int32
+      required:
+        - gcd
+        - quantity
+      x-tags:
+        - order

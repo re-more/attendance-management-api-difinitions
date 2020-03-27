@@ -1,0 +1,204 @@
+openapi: 3.0.2
+info:
+  version: 0.0.4
+  description: Item API
+  title: 商品に関するAPI
+servers:
+  - url: "{baseUrl}"
+    description: Do not discribe actual server URL. This parameter should be given by each envioronment config of application.
+    variables:
+      baseUrl:
+        default: 'http://localhost:10010/api/items'
+paths:
+  '/{gcd}':
+    get:
+      description: 商品情報
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Item'
+          description: OK
+        '400':
+          description: |
+            不正なIDです
+        '404':
+          description: |
+            商品が見つかりませんでした
+      operationId: getItem
+      summary: GetItem
+      tags:
+        - item
+      parameters:
+        - name: gcd
+          in: path
+          required: true
+          schema:
+            type: string
+  /search:
+    post:
+      description: 商品検索
+      summary: SearchItems
+      operationId: searchItems
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchItemsResponse'
+      tags:
+        - item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SearchItemsRequest'
+        description: ''
+components:
+  schemas:
+    Item:
+      type: object
+      description: 商品
+      properties:
+        gcd:
+          type: string
+        ggcd:
+          type: string
+        name:
+          type: string
+        size:
+          type: string
+        package:
+          type: string
+        allergen:
+          type: string
+        outline:
+          type: string
+        note1:
+          type: string
+        note2:
+          type: string
+        note3:
+          type: string
+        other:
+          type: string
+        delivery:
+          type: string
+        stock:
+          type: integer
+          format: int64
+        thumbnail:
+          type: string
+        images:
+          type: array
+          items:
+            type: string
+        icons:
+          type: array
+          items:
+            type: string
+      required:
+        - gcd
+        - ggcd
+        - name
+        - price
+        - stock
+      x-tags:
+        - item
+    Metadata:
+      type: object
+      description: 商品に選択肢があるとき
+      properties:
+        ggcd:
+          type: string
+        metaGroups:
+          type: array
+          items:
+            $ref: '#/components/schemas/MetaGroup'
+    MetaGroup:
+      type: object
+      properties:
+        metaLabel:
+          type: string
+        metas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Meta'
+    Meta:
+      type: object
+      properties:
+        gcd:
+          type: string
+        phrase:
+          type: string
+    Icon:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+        alt:
+          type: string
+      required:
+        - id
+        - url
+    SearchItemsResponse:
+      title: SearchItemsResponse
+      type: object
+      x-tags:
+        - item
+      properties:
+        data:
+          type: array
+          items:
+            type: string
+      required:
+        - data
+    SearchItemsRequest:
+      title: SearchItemsRequest
+      type: object
+      properties:
+        query:
+          type: array
+          items:
+            $ref: '#/components/schemas/SearchCondition'
+        sort:
+          $ref: '#/components/schemas/SortCondition'
+        last:
+          type: string
+      required:
+        - query
+      x-tags:
+        - item
+    SearchCondition:
+      title: SearchCondition
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      required:
+        - key
+        - value
+      x-tags:
+        - item
+    SortCondition:
+      title: SortCondition
+      type: object
+      properties:
+        sortKey:
+          type: string
+        order:
+          type: string
+          enum:
+            - ASC
+            - DESC
+          default: 'ASC'
+      required:
+        - sortKey
+      x-tags:
+        - item

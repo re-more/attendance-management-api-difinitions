@@ -1,0 +1,149 @@
+openapi: 3.0.2
+info:
+  title: Member API
+  description: 会員情報に関するサービス
+  version: 0.0.5
+servers:
+  - url: '{baseUrl}'
+    description: Do not discribe actual server URL. This parameter should be given by each envioronment config of application.
+    variables:
+      baseUrl:
+        default: 'http://localhost:10010/api/member'
+paths:
+  '/{id}':
+    get:
+      description: 会員情報を取得する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 会員情報
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberResponse'
+        '404':
+          description: Member not found
+      summary: 会員情報
+      tags:
+        - member
+      operationId: getMember
+  '/address/{id}':
+    get:
+      description: アドレス帳情報を取得する
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: アドレス帳情報
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        '404':
+          description: Member not found
+      summary: 会員情報
+      tags:
+        - member
+      operationId: getAddress
+components:
+  schemas:
+    Member:
+      type: object
+      x-tags:
+        - member
+      description: 会員情報
+      title: Member
+      properties:
+        id:
+          type: string
+        lastName:
+          type: string
+          description: 姓
+        firstName:
+          type: string
+          description: 名
+        lastNameKana:
+          type: string
+          description: セイ
+        firstNameKana:
+          type: string
+          description: メイ
+        zipCode:
+          type: string
+          description: 郵便番号
+        prefCode:
+          type: number
+          format: int32
+          description: 都道府県コード
+        addr1:
+          type: string
+          description: 住所1
+        addr2:
+          type: string
+          description: 住所2
+        addrList:
+          type: array
+          items:
+            type: string
+      required:
+        - id
+    MemberResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Member'
+    Address:
+      type: object
+      x-tags:
+        - member
+      description: アドレス情報
+      title: Address
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: 氏名
+        zipCode:
+          type: string
+          description: 郵便番号
+        prefCode:
+          type: number
+          format: int32
+          description: 都道府県コード
+        city:
+          type: string
+          description: 市区
+        addr1:
+          type: string
+          description: 住所1
+        addr2:
+          type: string
+          description: 住所2
+        tel:
+          type: string
+          description: 連絡先電話番号
+        companyName:
+          type: string
+          description: 会社名
+      required:
+        - id
+        - name
+        - zipCode
+        - prefCode
+        - city
+        - addr1
+    AddressResponse:
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Address'
