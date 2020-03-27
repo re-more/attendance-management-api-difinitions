@@ -1,0 +1,105 @@
+openapi: 3.0.2
+info:
+  version: 0.0.1
+  description: Attendance API
+  title: 出退勤API
+servers:
+  - url: "{baseUrl}"
+    description: Do not discribe actual server URL. This parameter should be given by each envioronment config of application.
+    variables:
+      baseUrl:
+        default: 'http://localhost:10010/api/attendance'
+paths:
+  '/{uid}':
+    get:
+      description: 個別ユーザの出退勤情報取得
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUserAttendanceResponse'
+          description: OK
+        '400':
+          description: |
+            不正なユーザIDです
+        '404':
+          description: |
+            ユーザが見つかりませんでした
+      operationId: getUserAttendance
+      summary: GetUserAttendance
+      tags:
+        - attendance
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+    post:
+      description: 個別ユーザの出退勤情報追加
+      operationId: postUserAttendance
+      summary: PostUserAttendance
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Attendance'
+      tags:
+        - attendance
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Attendance'
+        description: '個別ユーザの出退勤情報'
+components:
+  schemas:
+    Attendance:
+      type: object
+      description: 出退勤情報
+      properties:
+        id:
+          type: string
+        uid:
+          type: string
+        date:
+          type: string
+          format: date-time
+        action:
+          type: string
+        memo:
+          type: string
+      required:
+        - id
+        - uid
+        - date
+        - action
+      x-tags:
+        - attendance
+    GetUserAttendanceResponse:
+      title: GetUserAttendanceResponse
+      type: object
+      x-tags:
+        - attendance
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendance'
+      required:
+        - data
