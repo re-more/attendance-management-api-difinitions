@@ -17,3 +17,5 @@
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+
+/openapi-generator-cli.jar
