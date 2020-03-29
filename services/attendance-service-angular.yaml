@@ -1,0 +1,8 @@
+inputSpec: definitions/attendance-service.yaml
+outputDir: out/angular/AttendanceService
+generatorName: typescript-angular
+additionalProperties:
+  supportsES6: true
+  modelPropertyNaming: original
+  apiModulePrefix: AttendanceService
+  fileNaming: kebab-case

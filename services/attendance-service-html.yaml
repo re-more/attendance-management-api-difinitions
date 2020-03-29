@@ -1,0 +1,6 @@
+inputSpec: definitions/attendance-service.yaml
+outputDir: out/html
+generatorName: html2
+additionalProperties:
+  appName: "Attendance Service"
+  appDescription: "出退勤API"
