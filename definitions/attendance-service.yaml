@@ -38,13 +38,13 @@ paths:
           required: false
           schema:
             type: string
-            format: date-time
+            format: date
         - name: to
           in: query
           required: false
           schema:
             type: string
-            format: date-time
+            format: date
     post:
       description: 個別ユーザの出退勤情報追加
       operationId: postUserAttendance
