@@ -6,3 +6,5 @@ additionalProperties:
   modelPropertyNaming: original
   apiModulePrefix: AttendanceService
   fileNaming: kebab-case
+  npmName: "@re-more/attendance-service"
+  npmRepository: https://in-osaka.pigumer.gr.jp/nexus/repository/npm-private/
