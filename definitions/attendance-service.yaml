@@ -56,6 +56,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AttendanceResponse'
+        '401':
+          description: 認証が必要です。
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorDetail'
       security:
         - userPool: []
       tags:
@@ -109,6 +115,19 @@ components:
             $ref: '#/components/schemas/AttendanceResponse'
       required:
         - data
+    ErrorDetail:
+      title: ErrorDetail
+      type: object
+      x-tags:
+        - attendance
+      properties:
+        type:
+          type: string
+        title:
+          type: string
+      required:
+        - type
+        - title
   securitySchemes:
     userPool:
       type: apiKey
